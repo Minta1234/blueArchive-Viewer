@@ -1,0 +1,278 @@
+SC221000_01.png
+size:2048,2048
+filter:Linear,Linear
+scale:0.58
+01_FX
+bounds:1232,2,321,712
+rotate:90
+01_arm_01
+bounds:147,7,108,272
+offsets:3,2,115,276
+01_arm_02
+bounds:1967,1595,79,198
+offsets:4,3,86,205
+01_cat
+bounds:1040,1131,594,934
+rotate:90
+01_ear_L
+bounds:2,1548,101,135
+offsets:3,4,107,142
+01_ear_LB
+bounds:1221,1571,67,108
+offsets:3,0,71,111
+01_ear_R
+bounds:1677,1821,88,125
+offsets:1,3,93,128
+01_scarf
+bounds:1803,975,243,271
+offsets:3,2,249,275
+01_whiskers_01
+bounds:1326,1915,30,31
+offsets:3,2,37,37
+01_whiskers_02
+bounds:98,1912,49,34
+offsets:4,2,55,39
+01_whiskers_03
+bounds:1635,1889,37,57
+offsets:4,4,45,65
+01_whiskers_04
+bounds:1366,1894,77,52
+offsets:4,4,85,60
+01_whiskers_05
+bounds:1621,1880,51,66
+offsets:4,4,59,74
+01_whiskers_06
+bounds:1767,1837,35,109
+offsets:4,4,43,116
+01_whiskers_07
+bounds:968,1892,14,54
+offsets:4,3,21,59
+01_whiskers_08
+bounds:1508,1858,29,88
+offsets:4,4,36,96
+01_whiskers_09
+bounds:1283,1924,38,22
+offsets:2,3,44,29
+01_whiskers_10
+bounds:141,1926,43,20
+offsets:3,4,50,28
+01_whiskers_11
+bounds:982,1894,23,52
+offsets:4,3,31,57
+02_FX
+bounds:959,1738,872,208
+offsets:0,3,872,211
+rotate:180
+02_cat
+bounds:823,693,1088,461
+offsets:1,0,1089,463
+02_cat whiskers
+bounds:1418,1894,47,52
+offsets:4,4,55,60
+02_cat whiskers_01
+bounds:2,1932,63,14
+offsets:4,4,71,22
+02_cat whiskers_02
+bounds:54,1902,60,44
+offsets:4,4,68,52
+02_cat whiskers_03
+bounds:1665,1898,13,48
+offsets:4,4,20,56
+02_cat whiskers_04
+bounds:961,1887,9,59
+offsets:9,4,23,67
+02_cat2
+bounds:842,1439,306,271
+offsets:2,0,310,271
+03_cat
+bounds:73,829,928,871
+rotate:180
+03_cat whiskers_01
+bounds:1256,1467,218,212
+offsets:4,4,226,219
+03_cat whiskers_02
+bounds:2,1662,294,62
+offsets:0,1,297,66
+03_cat whiskers_03
+bounds:1777,1645,301,63
+offsets:4,4,307,71
+rotate:270
+03_cat whiskers_04
+bounds:1241,1554,226,123
+offsets:4,4,234,130
+03_cat whiskers_05
+bounds:438,50,221,413
+offsets:2,1,226,414
+rotate:90
+03_cat whiskers_06
+bounds:892,59,201,210
+offsets:4,4,209,218
+03_cat whiskers_07
+bounds:1124,1557,122,313
+offsets:3,3,128,320
+rotate:90
+03_cat whiskers_08
+bounds:756,1640,80,473
+offsets:3,2,87,477
+rotate:270
+03_cat whiskers_09
+bounds:2,1852,94,387
+offsets:3,3,100,393
+rotate:270
+03_cat whiskers_10
+bounds:437,19,197,595
+offsets:3,4,204,600
+rotate:90
+03_cat whiskers_11
+bounds:1804,777,242,273
+offsets:1,368,408,642
+03_cat whiskers_11a
+bounds:437,25,173,376
+offsets:234,1,408,642
+rotate:90
+03_cat whiskers_12
+bounds:1024,1845,101,489
+offsets:1,97,419,588
+rotate:270
+03_cat whiskers_13
+bounds:1623,1725,124,68
+offsets:3,2,131,74
+03_cat whiskers_14
+bounds:1465,1619,185,60
+offsets:4,3,193,67
+03_cat whiskers_15
+bounds:1275,1555,189,97
+offsets:4,3,195,104
+03_cat whiskers_16
+bounds:1083,1781,117,67
+offsets:4,4,125,75
+03_cat whiskers_17
+bounds:1216,1848,121,79
+offsets:3,3,128,86
+03_cat whiskers_18
+bounds:1922,1604,68,157
+offsets:4,4,75,164
+03_cat2
+bounds:1143,1680,98,575
+offsets:34,4,133,582
+rotate:270
+03_ear
+bounds:1841,1739,184,207
+offsets:0,0,184,208
+03_ear_L
+bounds:1408,240,463,389
+rotate:180
+03_ear_LB
+bounds:2,244,357,267
+offsets:0,2,359,270
+03_ear_R
+bounds:982,1037,309,247
+offsets:2,1,313,248
+03_eye
+bounds:1733,8,208,313
+offsets:0,0,208,315
+rotate:270
+03_eye_H
+bounds:1802,1886,62,60
+offsets:5,4,70,68
+03_eyeball
+bounds:652,75,202,313
+offsets:3,4,207,317
+rotate:90
+03_scarf
+bounds:1761,324,537,285
+offsets:0,1,539,286
+rotate:90
+03_scarf2
+bounds:676,355,233,496
+offsets:17,6,252,503
+cat tower_01
+bounds:539,1720,607,97
+offsets:2,4,609,104
+rotate:180
+cat tower_02
+bounds:256,51,270,299
+offsets:3,67,280,374
+cat tower_03
+bounds:32,1702,53,505
+offsets:300,75,405,658
+rotate:90
+cat tower_03a
+bounds:439,276,405,551
+offsets:0,83,405,658
+hammock_01
+bounds:760,1613,82,86
+offsets:3,4,88,93
+hammock_front
+bounds:992,411,973,390
+offsets:1,3,1477,397
+rotate:180
+hammock_front2
+bounds:2,475,525,355
+offsets:949,3,1477,397
+hammok_back
+bounds:861,210,547,202
+offsets:935,31,1486,233
+hammok_back2
+bounds:2,1753,958,193
+offsets:0,36,1486,233
+rope
+bounds:1462,1878,53,68
+offsets:3,3,60,71
+rope_a
+bounds:119,1868,187,69
+offsets:1,0,191,73
+rope_b
+bounds:465,1766,150,50
+offsets:4,2,157,55
+rope_c
+bounds:61,1913,29,33
+offsets:2,2,34,37
+
+SC221000_01_2.png
+size:2048,1024
+filter:Linear,Linear
+scale:0.58
+BG/03_sea
+bounds:1067,319,839,264
+offsets:927,260,1766,524
+BG/03_sky
+bounds:2,2,532,236
+offsets:0,139,532,375
+BG/island_01
+bounds:829,585,1020,69
+offsets:2,2,1023,71
+rotate:180
+BG/island_02
+bounds:1700,716,143,28
+offsets:0,2,143,31
+BG/island_03
+bounds:1065,679,639,65
+offsets:2,1,641,67
+BG/sea
+bounds:2,608,1062,136
+offsets:0,177,1064,314
+BG/sky
+bounds:2,240,1064,353
+offsets:0,255,1064,608
+BG/wall
+bounds:1066,86,745,232
+offsets:12,0,757,329
+rotate:180
+
+SC221000_01_3.png
+size:2048,1024
+filter:Linear,Linear
+scale:0.58
+FX/03_FX_01
+bounds:1034,30,718,505
+offsets:102,0,820,611
+rotate:90
+FX/FX_02
+bounds:2,2,1032,746
+offsets:0,2,1032,749
+FX/FX_03
+bounds:1540,219,364,529
+offsets:7,15,382,545
+FX/White_Box
+bounds:721,662,86,86
