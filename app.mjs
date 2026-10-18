@@ -16,7 +16,7 @@ async function json(url,optional=false) {
   if(!response.ok) { if(optional && response.status===404) return {}; throw new Error(`${url}: HTTP ${response.status}`); }
   return response.json();
 }
-const assetURL=relative=>joinAssetURL(relative,settings.assetBase || '/assets/');
+const assetURL=relative=>joinAssetURL(relative,settings.assetBase || 'https://raw.githubusercontent.com/Minta1234/blueArchive-Viewer/assets/models/');
 function status(message,error=false) {
   $('loading').hidden=!message;
   $('loading').textContent=message;
@@ -96,7 +96,7 @@ async function loadModel(model) {
     location.hash=encodeURIComponent(model.id);status('');
   } catch(error) {
     try {manager.dispose();} catch(disposalError) {console.warn('Incomplete texture cleanup failed',disposalError);}
-    if(token===loadingToken) {active=null;status(`Could not load scene\n${error.message}`,true);console.error(error);}
+    if(token===loadingToken) {active=null;status(`Could not load scene\n${error?.message || error || 'Asset request failed'}`,true);console.error(error);}
   }
 }
 function worldPoint(event) {
