@@ -1,0 +1,17 @@
+{
+  "name": "blue-archive-viewer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node server.mjs --static",
+    "test": "node --test web.test.mjs",
+    "test:local": "node --test test.mjs"
+  },
+  "dependencies": {
+    "@esotericsoftware/spine-webgl": "4.2.120",
+    "esbuild": "0.25.12",
+    "fflate": "0.8.2"
+  }
+}

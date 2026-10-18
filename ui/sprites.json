@@ -1,0 +1,32 @@
+{
+  "Lobby_balloon": {
+    "name": "Lobby_balloon",
+    "x": 1064,
+    "y": 1214,
+    "width": 136,
+    "height": 146,
+    "borderLeft": 80,
+    "borderRight": 50,
+    "borderTop": 84,
+    "borderBottom": 60,
+    "paddingLeft": 0,
+    "paddingRight": 0,
+    "paddingTop": 0,
+    "paddingBottom": 0
+  },
+  "Lobby_balloon2": {
+    "name": "Lobby_balloon2",
+    "x": 588,
+    "y": 296,
+    "width": 186,
+    "height": 146,
+    "borderLeft": 130,
+    "borderRight": 50,
+    "borderTop": 85,
+    "borderBottom": 55,
+    "paddingLeft": 0,
+    "paddingRight": 0,
+    "paddingTop": 0,
+    "paddingBottom": 0
+  }
+}

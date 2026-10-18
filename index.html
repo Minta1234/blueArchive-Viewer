@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Blue Archive — Interactive Memorial Lobby</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="caption.css">
+  <script src="vendor/spine-webgl.min.js"></script>
+  <script src="site-config.js"></script>
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <audio id="voice" preload="auto"></audio>
+  <aside>
+    <header><span class="eyebrow">BLUE ARCHIVE / SPINE 4.2</span><h1>Memorial Lobby<span class="dot">.</span></h1><p>Original animation, voice and touch interactions.</p></header>
+    <label for="search">Search characters</label><input id="search" type="search" placeholder="Airi, Hina, CH…" autocomplete="off">
+    <label for="category">Category</label><select id="category"><option value="SpineLobbies">Memorial Lobby</option><option value="all">All models</option><option value="SpineCharacters">Characters / Story</option><option value="SpineBackground">Backgrounds</option></select>
+    <div class="list-heading"><span>CHARACTERS</span><span id="count">…</span></div>
+    <div id="models" role="list" aria-label="Character list"></div>
+    <footer>Unofficial fan viewer · Assets load on demand<br><span id="total"></span></footer>
+  </aside>
+  <main>
+    <div class="topbar"><div><span class="eyebrow">INTERACTIVE VIEWER</span><h2 id="title">Loading…</h2></div><div class="toolbar"><button id="export">Export Wallpaper Engine</button><button id="mute" aria-pressed="false">Sound: On</button><button id="reset">Restart scene</button><button id="fullscreen" aria-label="Fullscreen">Fullscreen</button></div></div>
+    <section id="stage" aria-label="Animated scene">
+      <canvas id="canvas" tabindex="0" aria-label="Click to talk. Hold and drag the head to pat."></canvas>
+      <div id="loading" role="status">Preparing scene…</div>
+      <div id="subtitle" class="game-caption" aria-live="polite" hidden></div>
+      <div id="touch-hint">Click the character to talk · Hold and drag to pat</div>
+      <div class="stage-tools"><button id="talk">Talk</button><button id="pat" aria-pressed="false">Head pat</button><label class="check"><input id="hitboxes" type="checkbox"> Hit regions</label></div>
+    </section>
+    <section class="controls"><div class="now"><span class="eyebrow">NOW PLAYING</span><div id="playing">—</div><p id="mode">Loading interaction data</p><p id="voice-status" role="status" aria-live="polite"></p></div><div class="animation-control"><label for="animation">Original animation</label><div class="row"><select id="animation"></select><button id="play">Play</button><button id="pause" aria-pressed="false">Pause</button></div><label class="check"><input id="loop" type="checkbox"> Loop <span class="zoom-label">Zoom <input id="zoom" type="range" min="0.6" max="1.8" step="0.05" value="1"></span></label></div></section>
+    <details><summary>Original data / Fidelity notes</summary><pre id="evidence"></pre></details>
+  </main>
+  <dialog id="export-dialog" aria-labelledby="export-title"><h2 id="export-title">Wallpaper Engine</h2><p id="export-message" role="status"></p><div id="export-links"></div><button id="export-close">Close</button></dialog>
+</body>
+</html>

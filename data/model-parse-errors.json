@@ -1,0 +1,342 @@
+[
+  {
+    "skeleton": "SpineBackground/NP0281_skill/NP0281_skill.skel",
+    "error": "String in string table must not be null."
+  },
+  {
+    "skeleton": "SpineCharacters/ako_spr/ako_spr.skel",
+    "error": "Region not found in atlas: 01_Normal (mesh attachment: 01_Normal)"
+  },
+  {
+    "skeleton": "SpineCharacters/Automata_Decagrammaton1_spr/Automata_Decagrammaton1_spr.skel",
+    "error": "Region not found in atlas: Arius_GL1 (mesh attachment: Arius_GL1)"
+  },
+  {
+    "skeleton": "SpineCharacters/Automata_Kurokamegumi1_spr/Automata_Kurokamegumi1_spr.skel",
+    "error": "Region not found in atlas: Arius_GL1 (mesh attachment: Arius_GL1)"
+  },
+  {
+    "skeleton": "SpineCharacters/Automata_PMC1_spr/Automata_PMC1_spr.skel",
+    "error": "Region not found in atlas: Arius_GL1 (mesh attachment: Arius_GL1)"
+  },
+  {
+    "skeleton": "SpineCharacters/CH0262_spr/CH0262_spr.skel",
+    "error": "Region not found in atlas: 07_emo_01 (region attachment: 07_emo_01)"
+  },
+  {
+    "skeleton": "SpineCharacters/CH0271_spr/CH0271_spr.skel",
+    "error": "Region not found in atlas: CH0270 (mesh attachment: CH0270)"
+  },
+  {
+    "skeleton": "SpineCharacters/CH0285_spr/CH0285_spr.skel",
+    "error": "Region not found in atlas: CH0282 (mesh attachment: CH0282)"
+  },
+  {
+    "skeleton": "SpineCharacters/CH0295_spr/CH0295_spr.skel",
+    "error": "Region not found in atlas: 10_default eye on (region attachment: 10_default eye on)"
+  },
+  {
+    "skeleton": "SpineCharacters/CH0312_spr/CH0312_spr.skel",
+    "error": "Region not found in atlas: CH0311 (mesh attachment: CH0311)"
+  },
+  {
+    "skeleton": "SpineCharacters/CH0352_spr/CH0352_spr.skel",
+    "error": "Region not found in atlas: CH0313 (mesh attachment: CH0313)"
+  },
+  {
+    "skeleton": "SpineCharacters/Citizen_animal5_spr/Citizen_animal5_spr.skel",
+    "error": "Region not found in atlas: Citizen_animal5_eyepatch (mesh attachment: Citizen_animal5_eyepatch)"
+  },
+  {
+    "skeleton": "SpineCharacters/Citizen_animal6_bandagespr/Citizen_animal6_bandagespr.skel",
+    "error": "Region not found in atlas: Citizen_animal5_eyepatch (mesh attachment: Citizen_animal5_eyepatch)"
+  },
+  {
+    "skeleton": "SpineCharacters/Citizen_animal6_spr/Citizen_animal6_spr.skel",
+    "error": "Region not found in atlas: Citizen_animal5_eyepatch (mesh attachment: Citizen_animal5_eyepatch)"
+  },
+  {
+    "skeleton": "SpineCharacters/Citizen_animal7_spr/Citizen_animal7_spr.skel",
+    "error": "Region not found in atlas: Citizen_animal5_eyepatch (mesh attachment: Citizen_animal5_eyepatch)"
+  },
+  {
+    "skeleton": "SpineCharacters/citizen_borot2_spr/citizen_borot2_spr.skel",
+    "error": "Region not found in atlas: Citizen_animal5_eyepatch (mesh attachment: Citizen_animal5_eyepatch)"
+  },
+  {
+    "skeleton": "SpineCharacters/engineer_animal3_spr/engineer_animal3_spr.skel",
+    "error": "Region not found in atlas: Citizen_animal5_eyepatch (mesh attachment: Citizen_animal5_eyepatch)"
+  },
+  {
+    "skeleton": "SpineCharacters/helmetdan_black1_spr/helmetdan_black1_spr.skel",
+    "error": "Region not found in atlas: 01_normal (mesh attachment: 01_normal)"
+  },
+  {
+    "skeleton": "SpineCharacters/helmetdan_red1_spr/helmetdan_red1_spr.skel",
+    "error": "Region not found in atlas: 01_normal (mesh attachment: 01_normal)"
+  },
+  {
+    "skeleton": "SpineCharacters/kaitenranger_black_spr/kaitenranger_black_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/kaitenranger_green_spr/kaitenranger_green_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/kaitenranger_pink_spr/kaitenranger_pink_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/kaitenranger_red_spr/kaitenranger_red_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/kaitenranger_yellow_spr/kaitenranger_yellow_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/Maestro_spr/Maestro_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/market_animal2_spr/market_animal2_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0018_spr/NP0018_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0029_spr/NP0029_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0034_spr/NP0034_spr.skel",
+    "error": "Region not found in atlas: 01 (mesh attachment: 01)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0042_spr/NP0042_spr.skel",
+    "error": "Region not found in atlas: 01 (mesh attachment: 01)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0085_spr/NP0085_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0086_spr/NP0086_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0087_spr/NP0087_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0092_spr/NP0092_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0093_spr/NP0093_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0094_spr/NP0094_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0096_spr/NP0096_spr.skel",
+    "error": "Region not found in atlas: NP00956 (mesh attachment: NP00956)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0103_spr/NP0103_spr.skel",
+    "error": "Region not found in atlas: NP00956 (mesh attachment: NP00956)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0104_spr/NP0104_spr.skel",
+    "error": "Region not found in atlas: NP00956 (mesh attachment: NP00956)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0114_spr/NP0114_spr.skel",
+    "error": "Region not found in atlas: glow_1 (mesh attachment: glow_1)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0115_spr/NP0115_spr.skel",
+    "error": "Region not found in atlas: glow_1 (mesh attachment: glow_1)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0116_spr/NP0116_spr.skel",
+    "error": "Region not found in atlas: glow_1 (mesh attachment: glow_1)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0122_spr/NP0122_spr.skel",
+    "error": "Region not found in atlas: glow_1 (mesh attachment: glow_1)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0126_spr/NP0126_spr.skel",
+    "error": "Region not found in atlas: glow_1 (mesh attachment: glow_1)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0133_spr/NP0133_spr.skel",
+    "error": "Region not found in atlas: NP0132 (mesh attachment: NP0132)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0135_spr/NP0135_spr.skel",
+    "error": "Region not found in atlas: NP0132 (mesh attachment: NP0132)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0136_spr/NP0136_spr.skel",
+    "error": "Region not found in atlas: NP0132 (mesh attachment: NP0132)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0137_spr/NP0137_spr.skel",
+    "error": "Region not found in atlas: NP0132 (mesh attachment: NP0132)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0142_spr/NP0142_spr.skel",
+    "error": "Region not found in atlas: NP0132 (mesh attachment: NP0132)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0149_spr/NP0149_spr.skel",
+    "error": "Region not found in atlas: NP01434 (mesh attachment: NP01434)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0152_spr/NP0152_spr.skel",
+    "error": "Region not found in atlas: NP0150 (mesh attachment: NP0150)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0157_spr/NP0157_spr.skel",
+    "error": "Region not found in atlas: 02_respond (mesh attachment: 02_respond)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0160_spr/NP0160_spr.skel",
+    "error": "Region not found in atlas: 01_normal (mesh attachment: 01_normal)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0165_spr/NP0165_spr.skel",
+    "error": "Region not found in atlas: halo (mesh attachment: halo)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0180_spr/NP0180_spr.skel",
+    "error": "Region not found in atlas: halo (mesh attachment: halo)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0203_spr/NP0203_spr.skel",
+    "error": "Region not found in atlas: halo (mesh attachment: halo)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0207_spr/NP0207_spr.skel",
+    "error": "Region not found in atlas: halo (mesh attachment: halo)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0208_spr/NP0208_spr.skel",
+    "error": "Region not found in atlas: halo (mesh attachment: halo)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0233_spr/NP0233_spr.skel",
+    "error": "Region not found in atlas: 01 (mesh attachment: 01)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0242_spr/NP0242_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0244_spr/NP0244_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0247_spr/NP0247_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0248_spr/NP0248_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0251_spr/NP0251_spr.skel",
+    "error": "Region not found in atlas: NP0250 (mesh attachment: NP0250)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0253_spr/NP0253_spr.skel",
+    "error": "Region not found in atlas: NP0252 (mesh attachment: NP0252)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0257_spr/NP0257_spr.skel",
+    "error": "Region not found in atlas: 10 (region attachment: 10)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0260_spr/NP0260_spr.skel",
+    "error": "Region not found in atlas: 04_embarassed (region attachment: 04_embarassed)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0266_spr/NP0266_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0271_spr/NP0271_spr.skel",
+    "error": "Region not found in atlas: NP0272 (mesh attachment: NP0272)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0276_spr/NP0276_spr.skel",
+    "error": "Region not found in atlas: bangs (region attachment: bangs)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0282_spr/NP0282_spr.skel",
+    "error": "Region not found in atlas: bangs (region attachment: bangs)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0289_spr/NP0289_spr.skel",
+    "error": "Region not found in atlas: bangs (region attachment: bangs)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0292_spr/NP0292_spr.skel",
+    "error": "Region not found in atlas: 00_Default (region attachment: 00_Default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0294_spr/NP0294_spr.skel",
+    "error": "Region not found in atlas: 00_Default (region attachment: 00_Default)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0297_spr/NP0297_spr.skel",
+    "error": "Region not found in atlas: NP0296 (mesh attachment: NP0296)"
+  },
+  {
+    "skeleton": "SpineCharacters/NP0309_spr/NP0309_spr.skel",
+    "error": "Region not found in atlas: Halo (region attachment: Halo)"
+  },
+  {
+    "skeleton": "SpineCharacters/peroro_spr/peroro_spr.skel",
+    "error": "Region not found in atlas: 00_default (region attachment: 00_default)"
+  },
+  {
+    "skeleton": "SpineCharacters/robot2_division_spr/robot2_division_spr.skel",
+    "error": "Region not found in atlas: pmcdirector_1 (mesh attachment: pmcdirector_1)"
+  },
+  {
+    "skeleton": "SpineCharacters/royalguard_redwinter1_spr/royalguard_redwinter1_spr.skel",
+    "error": "Region not found in atlas: light (region attachment: light)"
+  },
+  {
+    "skeleton": "SpineCharacters/shibasekimaster_spr/shibasekimaster_spr.skel",
+    "error": "Region not found in atlas: light (region attachment: light)"
+  },
+  {
+    "skeleton": "SpineCharacters/tsubaki_spr/Tsubaki_spr.skel",
+    "error": "Region not found in atlas: defult (region attachment: defult)"
+  },
+  {
+    "skeleton": "SpineCharacters/wakamo_mask_spr/wakamo_mask_spr.skel",
+    "error": "Region not found in atlas: utahaturret (region attachment: utahaturret)"
+  },
+  {
+    "skeleton": "SpineCharacters/yoheki_redwinter1_spr/yoheki_redwinter1_spr.skel",
+    "error": "Region not found in atlas: utahaturret (region attachment: utahaturret)"
+  },
+  {
+    "skeleton": "SpineCharacters/Yukata_StreetGhostes_MG_spr/Yukata_StreetGhostes_MG_spr.skel",
+    "error": "Region not found in atlas: 00_defalt (region attachment: 00_defalt)"
+  },
+  {
+    "skeleton": "SpineCharacters/chinatsu_spr/chinatsu_spr.skel",
+    "error": "Region not found in atlas: 01_normal (region attachment: 01_normal)"
+  }
+]

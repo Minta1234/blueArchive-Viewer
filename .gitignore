@@ -1,0 +1,9 @@
+node_modules/
+dist/
+audio/
+.test-export-*/
+*.log
+__pycache__/
+.env
+.env.*
+

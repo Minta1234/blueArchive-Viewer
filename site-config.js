@@ -1,0 +1,1 @@
+globalThis.VIEWER_CONFIG = {};

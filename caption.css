@@ -1,0 +1,4 @@
+@font-face{font-family:GameJP;src:url("ui/GameJP-Medium.otf") format("opentype");font-display:swap}
+.game-caption{position:absolute;pointer-events:none;width:max-content;white-space:pre-wrap;font-family:GameJP,"Yu Gothic",Meiryo,sans-serif;font-weight:400;text-align:left;z-index:2}
+.game-caption[hidden]{display:none}
+.game-caption:before{content:"";position:absolute;z-index:-1;left:var(--pad-left);right:var(--pad-right);bottom:var(--pad-bottom);top:var(--pad-top);border-style:solid;border-width:var(--border-width);border-image-source:var(--balloon);border-image-slice:var(--slice) fill;border-image-repeat:stretch;transform:scale(var(--flip-x),var(--flip-y))}
