@@ -1,7 +1,7 @@
 export const wallpaperHTML=()=>`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Blue Archive Interactive Wallpaper</title><link rel="stylesheet" href="caption.css"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080c12;color:#edf6ff;font-family:Segoe UI,sans-serif}canvas{display:block;width:100%;height:100%;touch-action:none}#message{position:fixed;inset:0;display:grid;place-content:center;padding:25px;background:#0c1520;text-align:center}#message[hidden],#hint[hidden]{display:none}#hint{position:fixed;left:18px;bottom:16px;padding:9px 14px;border-radius:5px;background:#071321bb;font-size:12px;pointer-events:none}</style></head><body><canvas id="canvas" aria-label="Interactive character wallpaper"></canvas><audio id="voice" preload="auto"></audio><div id="subtitle" class="game-caption" aria-live="polite" hidden></div><div id="message" role="status">Loading character…</div><div id="hint" hidden>Click to talk · Hold and drag the head to pat · Drag other regions to move the gaze</div><script src="spine-webgl.min.js"></script><script src="data.js"></script><script src="wallpaper.js"></script></body></html>`;
 
 export function wallpaperProject(model,preview=false) {
-  return {title:`Blue Archive — ${model.folder} Interactive`,type:'web',file:'index.html',
+  return {title:`Blue Archive — ${model.displayName || model.folder} Interactive`,type:'web',file:'index.html',
     ...(preview ? {preview:'preview.jpg'} : {}),
     description:'Offline interactive Spine wallpaper with original animation settings, voice events and Japanese dialogue.',
     general:{properties:{

@@ -25,15 +25,15 @@ function status(message,error=false) {
 function stopAudio() { if(audio) {audio.pause();audio=null;} $('subtitle').textContent=''; }
 function renderList() {
   const category=$('category').value,query=$('search').value.trim().toLowerCase();
-  const filtered=models.filter(m=>(category==='all' || m.category===category) && `${m.name} ${m.folder}`.toLowerCase().includes(query));
+  const filtered=models.filter(m=>(category==='all' || m.category===category) && `${m.displayName || ''} ${m.name} ${m.folder}`.toLowerCase().includes(query));
   $('count').textContent=filtered.length;
   const fragment=document.createDocumentFragment();
   for(const model of filtered) {
     const button=document.createElement('button');button.type='button';
     button.className=model.id===selected?.id ? 'active' : '';
     button.setAttribute('aria-current',model.id===selected?.id ? 'true' : 'false');
-    const title=document.createElement('span');title.textContent=model.folder;
-    const detail=document.createElement('small');detail.textContent=`${model.animations.length} animations · ${model.name}`;
+    const title=document.createElement('span');title.textContent=model.displayName || model.folder;
+    const detail=document.createElement('small');detail.textContent=`${model.animations.length} animations · ${model.folder}`;
     button.append(title,detail);button.onclick=()=>loadModel(model);
     const item=document.createElement('div');item.setAttribute('role','listitem');item.append(button);fragment.append(item);
   }
@@ -46,7 +46,7 @@ async function loadModel(model) {
   if(active) {active.manager.dispose();active=null;}
   selected=model;paused=false;$('pause').textContent='Pause';$('pause').setAttribute('aria-pressed','false');
   $('export').disabled=true;
-  $('title').textContent=model.folder;$('playing').textContent='—';renderList();status(`Loading ${model.folder}…`);
+  $('title').textContent=model.displayName || model.folder;$('playing').textContent='—';renderList();status(`Loading ${model.displayName || model.folder}…`);
   const manager=new runtime.AssetManager(context);
   const binaryURL=assetURL(model.skeleton),atlasURL=assetURL(model.atlas);
   try {
