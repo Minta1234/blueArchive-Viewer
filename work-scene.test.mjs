@@ -23,7 +23,7 @@ test('work scenes join original prefab references and preserve scenario weights 
   assert.equal(workSceneForModel(catalog,catalog.scenes.UIWorkAronaScene_01_Day.modelId).prefabPath,catalog.scenes.UIWorkAronaScene_01_Day.prefabPath);
 });
 
-test('all original actor tracks play together; touches are gated and preserve background through return to Stand',()=>{
+test('all actor reactions return to visible idle tracks and allow another touch while Stand is unavailable',()=>{
   for(const scene of Object.values(catalog.scenes)) {
     const {controller,state}=fixture(scene);controller.start();
     assert.equal(state.getCurrent(0).animation.name,'Idle_background_00');
@@ -46,8 +46,11 @@ test('all original actor tracks play together; touches are gated and preserve ba
       }
       controller.update(duration/2);assert.equal(controller.canInteract(),false);
       controller.update(duration/2+0.001);
-      assert.equal(controller.actor,scene.actors.find(next=>next.stateName===actor.stateAfterInteraction));
-      assert.equal(controller.canInteract(),false);assert.equal(state.getCurrent(0).animation.name,'Idle_background_00');
+      assert.equal(controller.actor,actor);
+      assert.equal(controller.canInteract(),true);assert.equal(state.getCurrent(0).animation.name,'Idle_background_00');
+      for(const track of actor.idleTracks)assert.equal(state.getCurrent(track.TrackIndex).animation.name,track.AnimationName);
+      assert.equal(controller.talk(),true,'A second touch must remain available');
+      controller.update(duration+0.001);assert.equal(controller.actor,actor);
     }
   }
 });

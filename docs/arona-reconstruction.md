@@ -21,7 +21,7 @@ Rows 12/13 reference scenario 201100 and the `_02_Day`/`_02_Night` prefabs. No c
 - SpineScenePlayer.OnEnable (`0x1821602b0`): uniformly choose an actor whose `isIdle` flag is set.
 - SetAnimation: clear only the previous actor's track indices, preserving background track 0; play every new idle track simultaneously. Zero idle MixDuration uses the skeleton's default mix.
 - Interact (`0x18215ff00`): reject another click while an interaction is active; play all interaction tracks together with their explicit mix values, including zero.
-- CoInteract (`0x182161360`): wait for the maximum animation duration plus entry delay, then select the first matching stateAfterInteraction in original hierarchy order.
+- CoInteract (`0x182161360`): wait for the maximum animation duration plus entry delay, then resolve the first matching stateAfterInteraction in original hierarchy order. Until the separate Stand portrait is supported, a Stand destination returns to the previous visible idle actor instead.
 - Actor Awake (`0x18215ef30`): an empty return state disables its collider. The viewer preserves that gate for Stand.
 - Original BoxCollider coordinates are transformed into skeleton coordinates for clicking.
 
@@ -29,6 +29,6 @@ The same controller and serialized scene data are included in browser and Node W
 
 ## Not reproduced
 
-The minDuration/maxDuration fields control repeated idle dialogue, not automatic pose changes. Native dialogue mode 1 repeats ChatDialog after random waits; clicking uses mode 2. These work-scene dialogue/voice joins, emoticons, Unity FX and the separate Stand portrait are not yet reproduced. Returning to Stand therefore leaves the scene background while the separate portrait is pending. The UI calls this out. Fullscreen changes and combining catalog entries are deferred.
+The minDuration/maxDuration fields control repeated idle dialogue, not automatic pose changes. Native dialogue mode 1 repeats ChatDialog after random waits; clicking uses mode 2. These work-scene dialogue/voice joins, emoticons, Unity FX and the separate Stand portrait are not yet reproduced. The viewer temporarily restores the previous idle actor after a reaction instead of entering the incomplete Stand state, so the character stays visible and can be touched again. This fallback differs from the original game transition. Fullscreen changes and combining catalog entries are deferred.
 
 The extraction asserts prefab counts, unique skeleton joins, weights and every actor animation reference. Tests exercise all actor track combinations and return gates, and local checks apply the tracks to the original skeletons. Static analysis does not establish complete runtime or Wallpaper Engine parity.

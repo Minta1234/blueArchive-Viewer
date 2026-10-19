@@ -38,7 +38,7 @@ test('every Arona prefab actor applies to its original skeleton with a persisten
       for(const track of actor.idleTracks)assert.equal(scene.state.getCurrent(track.TrackIndex).animation.name,track.AnimationName);
       assert.equal(scene.controller.talk(),true);tick(scene,0.01);
       for(const track of actor.interactionTracks)assert.equal(scene.state.getCurrent(track.TrackIndex).animation.name,track.AnimationName);
-      tick(scene,30);assert.equal(scene.controller.actor.stateName,actor.stateAfterInteraction);
+      tick(scene,30);assert.equal(scene.controller.actor,actor);assert.equal(scene.controller.canInteract(),true);
     }
   }
 });

@@ -46,6 +46,7 @@ export class WorkSceneInteraction extends LobbyInteraction {
     if(this.interaction.remaining>0)return;
     const next=this.scene.actors.find(actor=>actor.stateName===this.actor.stateAfterInteraction);
     this.interaction=null;
-    if(next)this.setActor(next);
+    // shortcut: keep the current idle actor visible until the separate Stand portrait is implemented.
+    this.setActor(!next || next.stateName==='Stand' ? this.actor : next);
   }
 }

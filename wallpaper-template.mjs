@@ -18,7 +18,7 @@ export const wallpaperReadme=(model,voices,drags,workScene=null)=>`# ${model.fol
 Extract this ZIP into its own folder. Drag index.html into Create Wallpaper in Wallpaper Engine.
 Keep every file together. This wallpaper works offline without the viewer or Node.js.
 
-${workScene ? 'Click the actor to play its original reaction tracks. Returning to Stand preserves the background; the separate Stand portrait, work-scene dialogue and Unity effects are not yet reproduced.' : 'Click the character to talk. Hold and drag the head to pat, or drag other available regions.\nThe scene must finish its intro before interactions become available.'}
+${workScene ? 'Click the actor to play its original reaction tracks. After the reaction, the actor returns to its visible idle pose as a temporary fallback. The separate Stand portrait, work-scene dialogue and Unity effects are not yet reproduced.' : 'Click the character to talk. Hold and drag the head to pat, or drag other available regions.\nThe scene must finish its intro before interactions become available.'}
 Voice, volume, interaction, zoom and control hints are available in wallpaper properties.
 Wallpaper Engine FPS and pause/resume callbacks are supported.
 
