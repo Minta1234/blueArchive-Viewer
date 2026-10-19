@@ -16,6 +16,7 @@ await fs.writeFile(path.join(out,'site-config.js'),'globalThis.VIEWER_CONFIG='+J
 await fs.writeFile(path.join(out,'.nojekyll'),'');
 await build({entryPoints:[path.join(root,'app.mjs'),path.join(root,'wallpaper.mjs')],outdir:out,
   bundle:true,format:'iife',platform:'browser',target:'chrome90',minify:true,legalComments:'eof'});
+await fs.copyFile(path.join(out,'wallpaper.js'),path.join(root,'wallpaper.js'));
 let bytes=0;
 async function count(folder){for(const entry of await fs.readdir(folder,{withFileTypes:true})){
   const file=path.join(folder,entry.name);if(entry.isDirectory())await count(file);else bytes+=(await fs.stat(file)).size;

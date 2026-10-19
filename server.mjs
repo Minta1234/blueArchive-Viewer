@@ -17,7 +17,11 @@ export function resolveRequest(raw,siteRoot=here) {
   if (name.includes('\0') || name.includes('\\') || name.split('/').includes('..')) throw new Error('Invalid path');
   const root = siteRoot!==here ? siteRoot : name.startsWith('/assets/') ? assets : name.startsWith('/exports/') ? exportRoot : here;
   const relative = siteRoot!==here ? name.slice(1) || 'index.html' : name.startsWith('/assets/') ? name.slice(8) : name.startsWith('/exports/') ? name.slice(9) : name.slice(1) || 'index.html';
-  const target = path.resolve(root, relative);
+  let target = path.resolve(root, relative);
+  if (siteRoot===here && !fs.existsSync(target) && relative==='wallpaper.js') {
+    const distTarget = path.resolve(here, 'dist', relative);
+    if (fs.existsSync(distTarget)) target = distTarget;
+  }
   if (path.relative(root, target).startsWith('..') || path.isAbsolute(path.relative(root, target))) throw new Error('Invalid path');
   return { root, target };
 }
