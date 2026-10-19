@@ -10,7 +10,9 @@ export class SceneVoiceAudio {
   constructor({contextFactory=()=>new (globalThis.AudioContext || globalThis.webkitAudioContext)(),
     mediaFactory=()=>new Audio(),fetcher=globalThis.fetch,resolveURL=file=>file,
     protocol=globalThis.location?.protocol,timeout=20000,onState=()=>{},onError=console.warn}={}) {
-    Object.assign(this,{mediaFactory,fetcher,resolveURL,protocol,timeout,onState,onError});
+    const rawFetcher=fetcher || globalThis.fetch;
+    const safeFetcher=typeof rawFetcher==='function' ? rawFetcher.bind(globalThis) : (...args)=>globalThis.fetch(...args);
+    Object.assign(this,{mediaFactory,fetcher:safeFetcher,resolveURL,protocol,timeout,onState,onError});
     try {this.context=contextFactory();this.gain=this.context.createGain();this.gain.connect(this.context.destination);}
     catch(error){this.context=null;onError(error);}
     this.cache=new Map();this.loading=null;this.current=null;this.muted=false;this.paused=false;this.volume=1;
@@ -36,7 +38,7 @@ export class SceneVoiceAudio {
           const url=this.resolveURL(file);
           let clip;
           if(this.context && this.protocol!=='file:') {
-            const response=await this.fetcher(url,{signal:load.signal});
+            const response=await (this.fetcher || globalThis.fetch).call(globalThis,url,{signal:load.signal});
             if(!response.ok)throw new Error(`Voice HTTP ${response.status}: ${file}`);
             const bytes=await response.arrayBuffer();
             if(load.signal.aborted)return;

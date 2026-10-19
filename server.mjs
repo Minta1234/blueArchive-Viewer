@@ -43,6 +43,7 @@ export function createServer({staticSite=false}={}) {
       }catch(error){return reply(400,{error:error.message});}
     }
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }).end(); return; }
+    if (req.url === '/favicon.ico') { res.writeHead(204).end(); return; }
     try {
       const { root, target } = resolveRequest(req.url,siteRoot);
       const real = await fsp.realpath(target);

@@ -64,3 +64,19 @@ test('offline file wallpapers preload media without fetch and release sources on
   audio.play('audio/line.ogg');assert.equal(media.currentTime,0);assert.equal(requests.length,0);
   audio.reset();assert.equal(media.src,'');assert.equal(audio.cache.size,0);
 });
+
+test('fetcher preserves globalThis context so native Window.fetch does not throw Illegal invocation',async()=>{
+  let calledThis;
+  const strictFetch=function(url){
+    calledThis=this;
+    if(this!==globalThis && this!==undefined){
+      throw new TypeError("Failed to execute 'fetch' on 'Window': Illegal invocation");
+    }
+    return Promise.resolve(new Response(new Uint8Array([1])));
+  };
+  const {audio,errors}=fixture({fetcher:strictFetch});
+  const result=await audio.prepare(['voice.ogg']);
+  assert.equal(errors.length,0);
+  assert.equal(result.ready,1);
+  assert.equal(calledThis,globalThis);
+});
