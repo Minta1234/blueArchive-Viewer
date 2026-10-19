@@ -9,10 +9,11 @@ export function sceneVoiceFiles(skeletonData,voices) {
 export class SceneVoiceAudio {
   constructor({contextFactory=()=>new (globalThis.AudioContext || globalThis.webkitAudioContext)(),
     mediaFactory=()=>new Audio(),fetcher=globalThis.fetch,resolveURL=file=>file,
-    protocol=globalThis.location?.protocol,timeout=20000,onState=()=>{},onError=console.warn}={}) {
+    protocol=globalThis.location?.protocol,timeout=20000,onState=()=>{},onError=console.warn,
+    fontLoader=()=>globalThis.document?.fonts?.load?.('16px GameJP')}={}) {
     const rawFetcher=fetcher || globalThis.fetch;
     const safeFetcher=typeof rawFetcher==='function' ? rawFetcher.bind(globalThis) : (...args)=>globalThis.fetch(...args);
-    Object.assign(this,{mediaFactory,fetcher:safeFetcher,resolveURL,protocol,timeout,onState,onError});
+    Object.assign(this,{mediaFactory,fetcher:safeFetcher,resolveURL,protocol,timeout,onState,onError,fontLoader});
     try {this.context=contextFactory();this.gain=this.context.createGain();this.gain.connect(this.context.destination);}
     catch(error){this.context=null;onError(error);}
     this.cache=new Map();this.loading=null;this.current=null;this.muted=false;this.paused=false;this.volume=1;
@@ -49,7 +50,13 @@ export class SceneVoiceAudio {
         } catch(error) {if(!load.signal.aborted){failures.push(file);this.onError(error);}}
       }
     };
-    try {await Promise.all(Array.from({length:Math.min(4,queue.length)},worker));}
+    try {
+      const fontTask=this.fontLoader ? Promise.resolve().then(()=>this.fontLoader()).catch(error=>this.onError(error)) : null;
+      await Promise.all([
+        Promise.all(Array.from({length:Math.min(4,queue.length)},worker)),
+        fontTask
+      ]);
+    }
     finally {clearTimeout(timer);}
     return {ready:this.loading===load ? this.cache.size : 0,total:queue.length,failures,timedOut:load.signal.aborted};
   }

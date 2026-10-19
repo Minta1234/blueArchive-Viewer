@@ -77,7 +77,7 @@ async function init(){
   const skeleton=new spine.Skeleton(skeletonData),state=new spine.AnimationState(new spine.AnimationStateData(skeletonData));
   const controller=new LobbyInteraction(skeleton,state,data.model,data.config,()=>{},data.dialogue,data.layout);
   state.addListener({event:(entry,event)=>playVoice(entry,event)});
-  message.textContent='Preparing scene voices…';
+  message.textContent='Preparing scene voices and font…';
   const voiceReady=await voiceAudio.prepare(sceneVoiceFiles(skeletonData,data.voices));
   if(voiceReady.ready<voiceReady.total)console.warn(`Scene voices ready: ${voiceReady.ready}/${voiceReady.total}; unavailable clips will be skipped to preserve timing.`);
   controller.start();state.apply(skeleton);skeleton.updateWorldTransform(spine.Physics.reset);

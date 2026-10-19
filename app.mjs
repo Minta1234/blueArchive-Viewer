@@ -76,7 +76,7 @@ async function loadModel(model) {
         voiceAudio.play(voice);
       }
     }});
-    status('Preparing scene voices…');
+    status('Preparing scene voices and font…');
     const voiceReady=await voiceAudio.prepare(sceneVoiceFiles(data,voices));
     if(token!==loadingToken){manager.dispose();return;}
     voiceSummary=voiceReady.total ? `Voices ready: ${voiceReady.ready}/${voiceReady.total}${voiceReady.ready<voiceReady.total ? ' · Some voices unavailable; reselect the scene to retry' : ''}` : 'No matched voice clips';

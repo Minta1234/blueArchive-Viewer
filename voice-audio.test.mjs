@@ -80,3 +80,16 @@ test('fetcher preserves globalThis context so native Window.fetch does not throw
   assert.equal(result.ready,1);
   assert.equal(calledThis,globalThis);
 });
+
+test('prepare triggers fontLoader concurrently and remains resilient to font errors',async()=>{
+  let fontLoaded=false;
+  const {audio}=fixture({fontLoader:async()=>{fontLoaded=true;return [];}});
+  const result=await audio.prepare(['voice.ogg']);
+  assert.equal(result.ready,1);
+  assert.equal(fontLoaded,true);
+
+  const {audio:failingAudio,errors}=fixture({fontLoader:async()=>{throw new Error('Font unavailable');}});
+  const failingResult=await failingAudio.prepare(['voice.ogg']);
+  assert.equal(failingResult.ready,1);
+  assert.ok(errors.some(e=>e.message==='Font unavailable'));
+});
