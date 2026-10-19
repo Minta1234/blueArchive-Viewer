@@ -1,5 +1,6 @@
 import { LobbyInteraction, lobbyView, voiceForEvent } from './interaction.mjs';
 import {renderCaption} from './dialogue.mjs';
+import {SceneVoiceAudio,sceneVoiceFiles} from './voice-audio.mjs';
 import {assetURL as joinAssetURL} from './asset-path.mjs';
 
 const $=id=>document.getElementById(id);
@@ -7,9 +8,15 @@ const canvas=$('canvas'), stage=$('stage');
 const runtime=globalThis.spine;
 const settings=globalThis.VIEWER_CONFIG || {};
 let context,renderer,models,interactions,scenes,dialogues,voices={},active=null,selected=null,loadingToken=0,lastVoiceKey='';
-let paused=false,muted=false,audio=null,lastTime=performance.now(),press=null,forcedPat=false;
-let previewCapture=null,exportDownloadURL=null;
+let paused=false,muted=false,lastTime=performance.now(),press=null,forcedPat=false;
+let previewCapture=null,exportDownloadURL=null,voiceSummary='';
 const pointVector=new runtime.Vector3();
+const voiceAudio=new SceneVoiceAudio({resolveURL:file=>joinAssetURL(file,settings.audioBase || './'),
+  onState:playing=>{$('voice-status').textContent=playing ? 'Playing original voice' : voiceSummary;},
+  onError:error=>{if(error.name==='NotAllowedError')$('mode').textContent='Click the scene or Talk to enable audio';else console.warn('Voice preload/playback failed',error);}});
+voiceAudio.setVolume(0.85);
+for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>voiceAudio.unlock(),{capture:true});
+
 
 async function json(url,optional=false) {
   const response=await fetch(url);
@@ -22,7 +29,7 @@ function status(message,error=false) {
   $('loading').textContent=message;
   $('loading').style.color=error ? '#ffb4b4' : '';
 }
-function stopAudio() { if(audio) {audio.pause();audio=null;} $('subtitle').textContent=''; }
+function stopAudio() { voiceAudio.stop();$('subtitle').textContent=''; }
 function renderList() {
   const category=$('category').value,query=$('search').value.trim().toLowerCase();
   const filtered=models.filter(m=>(category==='all' || m.category===category) && `${m.displayName || ''} ${m.name} ${m.folder}`.toLowerCase().includes(query));
@@ -41,7 +48,7 @@ function renderList() {
 }
 async function loadModel(model) {
   const token=++loadingToken;
-  lastVoiceKey='';
+  lastVoiceKey='';voiceSummary='';voiceAudio.reset();voiceAudio.setPaused(document.hidden);
   endPress(false);stopAudio();forcedPat=false;$('pat').setAttribute('aria-pressed','false');
   if(active) {active.manager.dispose();active=null;}
   selected=model;paused=false;$('pause').textContent='Pause';$('pause').setAttribute('aria-pressed','false');
@@ -66,13 +73,15 @@ async function loadModel(model) {
       const cue=`${entry.animation.name}:${entry.trackTime}:${event.time}:${voice}`;
       if(voice && !muted && cue!==lastVoiceKey) {
         lastVoiceKey=cue;
-        stopAudio();audio=$('voice');audio.src=joinAssetURL(voice,settings.audioBase || './');audio.volume=0.85;
-        audio.play().catch(error=>{
-          if(error.name==='NotAllowedError') $('mode').textContent='Click the scene or Talk to enable audio';
-          else if(error.name!=='AbortError') $('mode').textContent=`Could not play this voice: ${error.message}`;
-        });
+        voiceAudio.play(voice);
       }
     }});
+    status('Preparing scene voices…');
+    const voiceReady=await voiceAudio.prepare(sceneVoiceFiles(data,voices));
+    if(token!==loadingToken){manager.dispose();return;}
+    voiceSummary=voiceReady.total ? `Voices ready: ${voiceReady.ready}/${voiceReady.total}${voiceReady.ready<voiceReady.total ? ' · Some voices unavailable; reselect the scene to retry' : ''}` : 'No matched voice clips';
+    $('voice-status').textContent=voiceSummary;
+    if(voiceReady.ready<voiceReady.total)console.warn(`Scene voices ready: ${voiceReady.ready}/${voiceReady.total}; unavailable clips will be skipped to preserve timing.`);
     controller.start();state.apply(skeleton);skeleton.updateWorldTransform(runtime.Physics.reset);
     const view=lobbyView(skeleton,config);
     active={model,manager,atlas,skeleton,state,controller,view,config,layout};
@@ -160,8 +169,6 @@ async function init() {
   context=new runtime.ManagedWebGLRenderingContext(canvas,{alpha:false,antialias:true});
   renderer=new runtime.SceneRenderer(canvas,context,true);
   [models,interactions,voices,scenes,dialogues]=await Promise.all([json('data/models.json'),json('data/interactions.json'),json('data/voices.json',true),json('data/scenes.json'),json('data/dialogues.json')]);
-  $('voice').onplaying=()=>{$('voice-status').textContent='Playing original voice';};
-  $('voice').onpause=$('voice').onended=()=>{$('voice-status').textContent='';};
   $('total').textContent=`${models.filter(m=>m.category==='SpineLobbies').length} lobbies · ${models.length} readable models`;
   $('search').oninput=renderList;$('category').onchange=renderList;
   $('talk').onclick=talk;$('pat').onclick=togglePat;
@@ -195,8 +202,8 @@ async function init() {
     finally{$('export').disabled=false;}
   };
   $('reset').onclick=()=>{if(active){stopAudio();active.controller.start();forcedPat=false;$('pat').setAttribute('aria-pressed','false');}};
-  $('mute').onclick=()=>{muted=!muted;if(muted)stopAudio();$('mute').textContent=`Sound: ${muted?'Off':'On'}`;$('mute').setAttribute('aria-pressed',String(muted));};
-  $('pause').onclick=()=>{paused=!paused;if(paused){stopAudio();endPress(false);active?.controller.stopDrag();forcedPat=false;$('pat').setAttribute('aria-pressed','false');}$('pause').textContent=paused?'Resume':'Pause';$('pause').setAttribute('aria-pressed',String(paused));};
+  $('mute').onclick=()=>{muted=!muted;voiceAudio.setMuted(muted);if(muted)stopAudio();$('mute').textContent=`Sound: ${muted?'Off':'On'}`;$('mute').setAttribute('aria-pressed',String(muted));};
+  $('pause').onclick=()=>{paused=!paused;voiceAudio.setPaused(paused || document.hidden);if(paused){stopAudio();endPress(false);active?.controller.stopDrag();forcedPat=false;$('pat').setAttribute('aria-pressed','false');}$('pause').textContent=paused?'Resume':'Pause';$('pause').setAttribute('aria-pressed',String(paused));};
   $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await stage.requestFullscreen();}catch(error){$('mode').textContent=error.message;}};
   $('play').onclick=()=>{
     if(!active)return;stopAudio();active.controller.stopDrag();forcedPat=false;$('pat').setAttribute('aria-pressed','false');
@@ -231,6 +238,7 @@ async function init() {
     if(event.key==='Escape'){endPress(false);active?.controller.stopDrag();forcedPat=false;$('pat').setAttribute('aria-pressed','false');}
   });
   window.addEventListener('blur',()=>{endPress(false);active?.controller.stopDrag();forcedPat=false;$('pat').setAttribute('aria-pressed','false');});
+  document.addEventListener('visibilitychange',()=>voiceAudio.setPaused(document.hidden || paused));
   requestAnimationFrame(render);
   const initial=models.find(m=>m.id===decodeURIComponent(location.hash.slice(1))) || models.find(m=>m.id==='SpineLobbies/Airi_home/Airi_home') || models[0];
   await loadModel(initial);

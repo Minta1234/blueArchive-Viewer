@@ -1,10 +1,18 @@
 import {LobbyInteraction,lobbyView,voiceForEvent,clamp} from './interaction.mjs';
 import {renderCaption} from './dialogue.mjs';
+import {SceneVoiceAudio,sceneVoiceFiles} from './voice-audio.mjs';
 
 const data=window.WALLPAPER_DATA,spine=window.spine;
-const canvas=document.getElementById('canvas'),message=document.getElementById('message'),voice=document.getElementById('voice');
+const canvas=document.getElementById('canvas'),message=document.getElementById('message');
 const settings={soundenabled:true,volume:80,interactive:true,zoom:1,showhint:false,fps:30,paused:false};
-let scene=null,press=null,last=performance.now(),lastDraw=last,resumeVoice=false,lastVoiceKey='';
+let scene=null,press=null,last=performance.now(),lastDraw=last,lastVoiceKey='';
+const voiceAudio=new SceneVoiceAudio({onError:error=>{
+  if(error.name==='NotAllowedError'){document.getElementById('hint').textContent='Click the wallpaper to enable audio';document.getElementById('hint').hidden=false;}
+  else console.warn('Voice preload/playback failed',error);
+}});
+voiceAudio.setVolume(settings.volume/100);
+for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>voiceAudio.unlock(),{capture:true});
+document.addEventListener('visibilitychange',()=>voiceAudio.setPaused(document.hidden || settings.paused));
 function stopPress(talk=false) {
   if(!press)return;clearTimeout(press.timer);const previous=press;press=null;
   if(previous.triggered)scene?.controller.stopDrag();
@@ -15,32 +23,27 @@ window.wallpaperPropertyListener={
     for(const key of ['soundenabled','interactive','showhint'])if(properties[key])settings[key]=Boolean(properties[key].value);
     if(properties.volume)settings.volume=clamp(Number(properties.volume.value)||0,0,100);
     if(properties.zoom)settings.zoom=clamp(Number(properties.zoom.value)||1,0.6,1.8);
-    voice.volume=settings.volume/100;
-    if(!settings.soundenabled){voice.pause();resumeVoice=false;}
+    voiceAudio.setVolume(settings.volume/100);
+    voiceAudio.setMuted(!settings.soundenabled);
     if(!settings.interactive){stopPress();scene?.controller.stopDrag();}
     document.getElementById('hint').hidden=!settings.showhint;
   },
   applyGeneralProperties(properties){if(Number.isFinite(properties.fps))settings.fps=clamp(properties.fps,0,240);},
   setPaused(paused){
-    if(paused){if(!settings.paused)resumeVoice=!voice.paused;stopPress();voice.pause();}
-    else if(settings.paused && resumeVoice && settings.soundenabled)voice.play().catch(error=>console.error('Voice resume failed',error));
-    settings.paused=Boolean(paused);last=lastDraw=performance.now();
+    if(paused)stopPress();
+    settings.paused=Boolean(paused);voiceAudio.setPaused(settings.paused || document.hidden);last=lastDraw=performance.now();
   }
 };
 function world(event){
   const rect=canvas.getBoundingClientRect(),point=new spine.Vector3(event.clientX-rect.left,event.clientY-rect.top,0);
   scene.renderer.camera.screenToWorld(point,rect.width,rect.height);return {x:point.x,y:point.y};
 }
-function stopSound(){voice.pause();}
+function stopSound(){voiceAudio.stop();}
 function playVoice(entry,event){
   const file=voiceForEvent(event,data.voices);if(!file || !settings.soundenabled || settings.paused)return;
   const cue=`${entry.animation.name}:${entry.trackTime}:${event.time}:${file}`;
   if(cue===lastVoiceKey)return;lastVoiceKey=cue;
-  voice.pause();voice.src=file;voice.volume=settings.volume/100;
-  voice.play().catch(error=>{
-    if(error.name==='NotAllowedError'){document.getElementById('hint').textContent='Click the wallpaper to enable audio';document.getElementById('hint').hidden=false;}
-    else if(error.name!=='AbortError')console.error('Voice playback failed',error);
-  });
+  voiceAudio.play(file);
 }
 function frame(now){
   requestAnimationFrame(frame);
@@ -74,6 +77,9 @@ async function init(){
   const skeleton=new spine.Skeleton(skeletonData),state=new spine.AnimationState(new spine.AnimationStateData(skeletonData));
   const controller=new LobbyInteraction(skeleton,state,data.model,data.config,()=>{},data.dialogue,data.layout);
   state.addListener({event:(entry,event)=>playVoice(entry,event)});
+  message.textContent='Preparing scene voices…';
+  const voiceReady=await voiceAudio.prepare(sceneVoiceFiles(skeletonData,data.voices));
+  if(voiceReady.ready<voiceReady.total)console.warn(`Scene voices ready: ${voiceReady.ready}/${voiceReady.total}; unavailable clips will be skipped to preserve timing.`);
   controller.start();state.apply(skeleton);skeleton.updateWorldTransform(spine.Physics.reset);
   scene={context,renderer,atlas,skeleton,state,controller,view:lobbyView(skeleton,data.config)};
   canvas.addEventListener('mousedown',event=>{
