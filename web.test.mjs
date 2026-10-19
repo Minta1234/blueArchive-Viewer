@@ -58,7 +58,7 @@ test('browser-only ZIP preserves binary assets, original dialogue, local runtime
   ]);
   for(const file of ['caption.css','ui/Lobby_balloon.png','ui/Lobby_balloon2.png','ui/GameJP-Medium.otf','wallpaper.js','vendor/spine-webgl.min.js','vendor/SPINE-RUNTIME-LICENSE.txt'])assets.set('https://site.example.test/project/'+file,new Uint8Array(await fs.readFile('dist/'+file)));
   globalThis.fetch=async url=>{requests.push(String(url));return assets.has(String(url)) ? new Response(assets.get(String(url))) : new Response('',{status:404});};
-  const scene={model:{id:'test',folder:'test',skeleton:'test/model.skel',atlas:'test/model.atlas',events:[]},config:{drags:[]},layout:{bodyTouches:[]},
+  const scene={model:{id:'test',folder:'test',skeleton:'test/model.skel',atlas:'test/model.atlas',events:[]},config:{drags:[]},layout:{bodyTouches:[]},workScene:{actors:[{stateName:'Sleep'}]},
     atlas:{pages:[{name:'page.png'}]},skeleton:{data:{animations:[{timelines:[{events:[{stringValue:'OriginalVoice',data:{name:'Talk'}}]}]}]}}};
   const args={scene,voices:{OriginalVoice:'audio/original.ogg',Unused:'audio/not-selected.ogg'},dialogue:{groups:[{rows:[{text:'心配しないでください。'}]}]},uiRoot:{manualWidth:2960,manualHeight:1440},
     assetBase:'https://assets.example.test/models/',audioBase:'https://assets.example.test/',siteBase:'https://site.example.test/project/',preview:'data:image/jpeg;base64,/9j/2Q=='};
@@ -69,6 +69,7 @@ test('browser-only ZIP preserves binary assets, original dialogue, local runtime
     assert.deepEqual(Buffer.from(payload.binary,'base64'),Buffer.from(binary));
     assert.deepEqual(files['textures/page.png'],image);
     assert.equal(payload.dialogue.groups[0].rows[0].text,'心配しないでください。');
+    assert.deepEqual(payload.workScene,scene.workScene);
     assert.ok(files['ui/GameJP-Medium.otf'].length>7000000);assert.ok(files['preview.jpg']);
     const project=JSON.parse(strFromU8(files['project.json']));assert.equal(project.file,'index.html');assert.equal(project.preview,'preview.jpg');
     assert.equal(project.general.properties.interactive.value,true);

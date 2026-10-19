@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { TextureAtlas,AtlasAttachmentLoader,SkeletonBinary,Skeleton,AnimationStateData,AnimationState,Physics } from '@esotericsoftware/spine-core';
 import { LobbyInteraction,chainMatrix,inverse,multiply,transform,pointInPolygon,voiceForEvent,gameViewport,lobbyView } from './interaction.mjs';
 import {dialogueText} from './dialogue.mjs';
+import {WorkSceneInteraction} from './work-scene.mjs';
 import { createServer,resolveRequest } from './server.mjs';
 import {exportWallpaper} from './export-wallpaper.mjs';
 
@@ -24,6 +25,23 @@ function tick(scene,dt=0.25) {
   scene.skeleton.updateWorldTransform(Physics.none);scene.controller.update(dt);scene.skeleton.updateWorldTransform(Physics.update);
   for(const bone of scene.skeleton.bones) assert.ok(Number.isFinite(bone.worldX+bone.worldY),`Invalid bone ${bone.data.name}`);
 }
+
+test('every Arona prefab actor applies to its original skeleton with a persistent background track',()=>{
+  const work=readJSON('arona-scenes.json');
+  for(const source of Object.values(work.scenes)) {
+    const model=models.find(model=>model.id===source.modelId),scene=load(model);
+    scene.controller=new WorkSceneInteraction(scene.skeleton,scene.state,model,source);
+    scene.controller.start();tick(scene);
+    for(const actor of source.actors.filter(actor=>actor.isIdle)) {
+      scene.controller.setActor(actor);tick(scene,0.01);
+      assert.equal(scene.state.getCurrent(0).animation.name,'Idle_background_00');
+      for(const track of actor.idleTracks)assert.equal(scene.state.getCurrent(track.TrackIndex).animation.name,track.AnimationName);
+      assert.equal(scene.controller.talk(),true);tick(scene,0.01);
+      for(const track of actor.interactionTracks)assert.equal(scene.state.getCurrent(track.TrackIndex).animation.name,track.AnimationName);
+      tick(scene,30);assert.equal(scene.controller.actor.stateName,actor.stateAfterInteraction);
+    }
+  }
+});
 
 test('affine transforms round trip nested original Unity transforms',()=>{
   const chain=[{position:{x:4,y:2},rotation:{x:0,y:0,z:Math.SQRT1_2,w:Math.SQRT1_2},scale:{x:2,y:3}},

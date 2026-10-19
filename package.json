@@ -6,7 +6,7 @@
     "start": "node server.mjs",
     "build": "node scripts/build.mjs",
     "preview": "node server.mjs --static",
-    "test": "node --test web.test.mjs voice-audio.test.mjs",
+    "test": "node --test web.test.mjs voice-audio.test.mjs work-scene.test.mjs",
     "test:local": "node --test test.mjs"
   },
   "dependencies": {

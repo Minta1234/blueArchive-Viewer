@@ -8,7 +8,7 @@ function base64(bytes) {
 }
 
 export async function exportInBrowser({scene,voices,dialogue,uiRoot,assetBase,audioBase,siteBase,preview,onProgress=()=>{}}) {
-  const {model,config,layout,atlas,skeleton}=scene;
+  const {model,config,layout,atlas,skeleton,workScene}=scene;
   const entries={};let completed=0;
   const fetchBytes=async url=>{
     const response=await fetch(url);
@@ -38,14 +38,14 @@ export async function exportInBrowser({scene,voices,dialogue,uiRoot,assetBase,au
   for(let i=0;i<files.length;i+=4)await Promise.all(files.slice(i,i+4).map(async([name,url])=>{
     entries[name]=[await fetchBytes(url),{level:/\.(png|ogg|jpg)$/.test(name) ? 0 : 6}];
   }));
-  const payload={model,config,layout,uiRoot,dialogue,voices:selectedVoices,atlasText:new TextDecoder().decode(atlasBytes),binary:base64(binary)};
+  const payload={model,config,layout,workScene,uiRoot,dialogue,voices:selectedVoices,atlasText:new TextDecoder().decode(atlasBytes),binary:base64(binary)};
   entries['data.js']=strToU8('window.WALLPAPER_DATA='+JSON.stringify(payload)+';\n');
-  entries['index.html']=strToU8(wallpaperHTML());
+  entries['index.html']=strToU8(wallpaperHTML(Boolean(workScene)));
   const hasPreview=typeof preview==='string' && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(preview) && preview.length<=6*1024*1024;
   if(preview!==undefined && !hasPreview)throw new Error('Invalid preview image');
   if(hasPreview)entries['preview.jpg']=[Uint8Array.from(atob(preview.split(',')[1]),c=>c.charCodeAt(0)),{level:0}];
   entries['project.json']=strToU8(JSON.stringify(wallpaperProject(model,hasPreview),null,2));
-  entries['README.md']=strToU8(wallpaperReadme(model,audioFiles.length,config?.drags.length || 0));
+  entries['README.md']=strToU8(wallpaperReadme(model,audioFiles.length,config?.drags.length || 0,workScene));
   onProgress('zip');
   const bytes=await new Promise((resolve,reject)=>zip(entries,{level:6},(error,data)=>error ? reject(error) : resolve(data)));
   const slug=model.folder.replace(/[^A-Za-z0-9_-]/g,'_').slice(0,64) || 'wallpaper';

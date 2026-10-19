@@ -1,4 +1,5 @@
 import {wallpaperHTML,wallpaperProject,wallpaperReadme} from './wallpaper-template.mjs';
+import {workSceneForModel} from './work-scene.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -26,6 +27,7 @@ export async function exportWallpaper(modelId,{preview,outputRoot=exportRoot}={}
   if(preview!==undefined && (typeof preview!=='string' || !/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(preview) || preview.length>6*1024*1024))throw new Error('Invalid preview image');
   const interactions=await readJSON('interactions.json'),allVoices=await readJSON('voices.json');
   const scenes=await readJSON('scenes.json'),dialogues=await readJSON('dialogues.json');
+  const workScene=workSceneForModel(await readJSON('arona-scenes.json'),modelId);
   const config=interactions[modelId] || null;
   const binary=await fs.readFile(await safeSource(assets,model.skeleton));
   const atlasText=await fs.readFile(await safeSource(assets,model.atlas),'utf8'),atlas=new TextureAtlas(atlasText);
@@ -53,15 +55,15 @@ export async function exportWallpaper(modelId,{preview,outputRoot=exportRoot}={}
   await copy(path.join(here,'node_modules/@esotericsoftware/spine-webgl/dist/iife/spine-webgl.min.js'),'spine-webgl.min.js');
   await copy(path.join(here,'node_modules/@esotericsoftware/spine-webgl/LICENSE'),'SPINE-RUNTIME-LICENSE.txt');
   for(const file of ['caption.css','ui/Lobby_balloon.png','ui/Lobby_balloon2.png','ui/GameJP-Medium.otf'])await copy(path.join(here,file),file);
-  const payload={model,config,voices,layout:scenes.models[modelId],uiRoot:scenes.uiRoot,dialogue:dialogues.byModel[modelId] || null,atlasText,binary:binary.toString('base64')};
+  const payload={model,config,voices,workScene,layout:scenes.models[modelId],uiRoot:scenes.uiRoot,dialogue:dialogues.byModel[modelId] || null,atlasText,binary:binary.toString('base64')};
   await fs.writeFile(path.join(directory,'data.js'),'window.WALLPAPER_DATA='+JSON.stringify(payload)+';\n');
   await build({entryPoints:[path.join(here,'wallpaper.mjs')],bundle:true,format:'iife',target:'chrome90',minify:true,
     outfile:path.join(directory,'wallpaper.js'),legalComments:'eof'});
-  await fs.writeFile(path.join(directory,'index.html'),wallpaperHTML());
+  await fs.writeFile(path.join(directory,'index.html'),wallpaperHTML(Boolean(workScene)));
   const project=wallpaperProject(model,Boolean(preview));
   if(preview)await fs.writeFile(path.join(directory,'preview.jpg'),Buffer.from(preview.split(',')[1],'base64'));
   await fs.writeFile(path.join(directory,'project.json'),JSON.stringify(project,null,2));
-  await fs.writeFile(path.join(directory,'README.md'),wallpaperReadme(model,audioFiles.length,config?.drags.length || 0));
+  await fs.writeFile(path.join(directory,'README.md'),wallpaperReadme(model,audioFiles.length,config?.drags.length || 0,workScene));
   const zip=directory+'.zip';
   await execFileAsync('python',[path.join(here,'zip-export.py'),directory,zip],{windowsHide:true,maxBuffer:1024*1024});
   const zipBytes=(await fs.stat(zip)).size,name=path.basename(directory);

@@ -1,6 +1,7 @@
 import {LobbyInteraction,lobbyView,voiceForEvent,clamp} from './interaction.mjs';
 import {renderCaption} from './dialogue.mjs';
 import {SceneVoiceAudio,sceneVoiceFiles} from './voice-audio.mjs';
+import {WorkSceneInteraction} from './work-scene.mjs';
 
 const data=window.WALLPAPER_DATA,spine=window.spine;
 const canvas=document.getElementById('canvas'),message=document.getElementById('message');
@@ -75,7 +76,8 @@ async function init(){
   const binary=Uint8Array.from(atob(data.binary),c=>c.charCodeAt(0));
   const skeletonData=new spine.SkeletonBinary(new spine.AtlasAttachmentLoader(atlas)).readSkeletonData(binary);
   const skeleton=new spine.Skeleton(skeletonData),state=new spine.AnimationState(new spine.AnimationStateData(skeletonData));
-  const controller=new LobbyInteraction(skeleton,state,data.model,data.config,()=>{},data.dialogue,data.layout);
+  const controller=data.workScene ? new WorkSceneInteraction(skeleton,state,data.model,data.workScene)
+    : new LobbyInteraction(skeleton,state,data.model,data.config,()=>{},data.dialogue,data.layout);
   state.addListener({event:(entry,event)=>playVoice(entry,event)});
   message.textContent='Preparing scene voices and font…';
   const voiceReady=await voiceAudio.prepare(sceneVoiceFiles(skeletonData,data.voices));

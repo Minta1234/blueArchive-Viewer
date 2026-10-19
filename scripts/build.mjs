@@ -7,7 +7,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),out=p
 await fs.mkdir(out,{recursive:true});
 for(const name of ['style.css','caption.css','ui','vendor'])await fs.cp(path.join(root,name),path.join(out,name),{recursive:true});
 await fs.mkdir(path.join(out,'data'),{recursive:true});
-for(const name of ['models.json','interactions.json','voices.json','dialogues.json','scenes.json'])await fs.copyFile(path.join(root,'data',name),path.join(out,'data',name));
+for(const name of ['models.json','interactions.json','voices.json','dialogues.json','scenes.json','arona-scenes.json'])await fs.copyFile(path.join(root,'data',name),path.join(out,'data',name));
 const html=(await fs.readFile(path.join(root,'index.html'),'utf8')).replace('src="app.mjs"','src="app.js"');
 await fs.writeFile(path.join(out,'index.html'),html);
 const settings={assetBase:'https://raw.githubusercontent.com/Minta1234/blueArchive-Viewer/assets/models/',

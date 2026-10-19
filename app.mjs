@@ -1,13 +1,14 @@
 import { LobbyInteraction, lobbyView, voiceForEvent } from './interaction.mjs';
 import {renderCaption} from './dialogue.mjs';
 import {SceneVoiceAudio,sceneVoiceFiles} from './voice-audio.mjs';
+import {WorkSceneInteraction,workSceneForModel} from './work-scene.mjs';
 import {assetURL as joinAssetURL} from './asset-path.mjs';
 
 const $=id=>document.getElementById(id);
 const canvas=$('canvas'), stage=$('stage');
 const runtime=globalThis.spine;
 const settings=globalThis.VIEWER_CONFIG || {};
-let context,renderer,models,interactions,scenes,dialogues,voices={},active=null,selected=null,loadingToken=0,lastVoiceKey='';
+let context,renderer,models,interactions,scenes,dialogues,workScenes,voices={},active=null,selected=null,loadingToken=0,lastVoiceKey='';
 let paused=false,muted=false,lastTime=performance.now(),press=null,forcedPat=false;
 let previewCapture=null,exportDownloadURL=null,voiceSummary='';
 const pointVector=new runtime.Vector3();
@@ -64,9 +65,10 @@ async function loadModel(model) {
     const data=reader.readSkeletonData(manager.require(binaryURL)),skeleton=new runtime.Skeleton(data);
     const state=new runtime.AnimationState(new runtime.AnimationStateData(data));
     const config=interactions[model.id],layout=scenes.models[model.id],dialogue=dialogues.byModel[model.id];
-    const controller=new LobbyInteraction(skeleton,state,model,config,(name,track)=>{
-      if(track<2) $('playing').textContent=name;
-    },dialogue,layout);
+    const workScene=workSceneForModel(workScenes,model.id);
+    const onPlay=(name,track)=>{if(workScene ? track>0 && name!=='Dummy' : track<2)$('playing').textContent=name;};
+    const controller=workScene ? new WorkSceneInteraction(skeleton,state,model,workScene,onPlay)
+      : new LobbyInteraction(skeleton,state,model,config,onPlay,dialogue,layout);
     state.addListener({event:(entry,event)=>{
       if(token!==loadingToken) return;
       const voice=voiceForEvent(event,voices);
@@ -84,15 +86,19 @@ async function loadModel(model) {
     if(voiceReady.ready<voiceReady.total)console.warn(`Scene voices ready: ${voiceReady.ready}/${voiceReady.total}; unavailable clips will be skipped to preserve timing.`);
     controller.start();state.apply(skeleton);skeleton.updateWorldTransform(runtime.Physics.reset);
     const view=lobbyView(skeleton,config);
-    active={model,manager,atlas,skeleton,state,controller,view,config,layout};
+    active={model,manager,atlas,skeleton,state,controller,view,config,layout,workScene};
     $('export').disabled=false;
     const options=model.animations.map(a=>{const option=document.createElement('option');option.value=a.name;option.textContent=`${a.name} (${a.duration.toFixed(2)}s)`;return option;});
     $('animation').replaceChildren(...options);
     $('zoom').value='1';
     const pat=controller.geometry.find(g=>/^Pat/.test(g.control.IngClip?.clip));
-    $('pat').disabled=!pat;$('talk').disabled=!model.animations.some(a=>/^Talk/i.test(a.name));
-    $('mode').textContent=config ? `Original clip settings · ${controller.geometry.length} drag regions` : 'Animation mode · No original touch data for this scene';
-    $('touch-hint').textContent=pat ? 'Click to talk · Hold and drag the head to pat · Drag other regions to move the gaze' : 'Click to talk · Or choose an animation below';
+    $('pat').disabled=!pat;$('talk').disabled=workScene ? !controller.canInteract() : !model.animations.some(a=>/^Talk/i.test(a.name));
+    $('talk').textContent=workScene ? 'React' : 'Talk';
+    canvas.setAttribute('aria-label',workScene ? 'Click the actor to react. Restart scene picks an idle state.' : 'Click to talk. Hold and drag the head to pat.');
+    $('mode').textContent=workScene ? 'Original work scene · Background and actor tracks · Click the actor to react'
+      : config ? `Original clip settings · ${controller.geometry.length} drag regions` : 'Animation mode · No original touch data for this scene';
+    $('touch-hint').textContent=workScene ? 'Click the actor to react · Restart scene picks an original idle state'
+      : pat ? 'Click to talk · Hold and drag the head to pat · Drag other regions to move the gaze' : 'Click to talk · Or choose an animation below';
     $('evidence').textContent=[`Skeleton: ${model.skeleton}`,`Atlas: ${model.atlas}`,`Spine: ${model.version}`,
       config ? `Original prefab: ${config.sourceBundle}` : 'No original interaction prefab found',
       config ? `Clip config: ${Object.keys(config.clips).length} clips, defaultMix=${config.skeletonData.defaultMix}` : '',
@@ -101,6 +107,7 @@ async function loadModel(model) {
       'Camera: UIRoot 2960×1440 + native activeHeight / UIManager projection',
       'Native drag formulas, idle gates and release blocking; original prefab body collider and dialogue layout',
       dialogue ? `Original JP dialogue from CharacterDialog / MemoryLobby: ${dialogue.groups.length} groups` : 'No verified dialogue table match',
+      workScene ? `Work prefab: ${workScene.prefabPath}\nBackground: ${workScene.backgroundAnimation} on track 0; ${workScene.actors.length} original actor states.\nScene selection uses story-clear/force-entry conditions and Ratio weights; no clock-based switch is implemented.\nArona idle dialogue, Stand portrait and Unity effects are not yet reproduced.` : '',
       'Unity timelines, post-processing, gyro, account conditions and full NGUI text layout are not reproduced'].filter(Boolean).join('\n');
     location.hash=encodeURIComponent(model.id);status('');
   } catch(error) {
@@ -161,6 +168,11 @@ function render(now) {
     }
   }
   renderer.end();
+  if(active.workScene) {
+    $('talk').disabled=!controller.canInteract();
+    $('mode').textContent=controller.actor?.stateName==='Stand' ? 'Original Stand state · Separate portrait and dialogue are not yet reproduced'
+      : `Original work scene · ${controller.actor?.stateName || ''} · Click the actor to react`;
+  }
   renderCaption($('subtitle'),controller.dialogueRow,active.layout,view,canvas.clientWidth,canvas.clientHeight,zoom);
   if(previewCapture){const resolve=previewCapture;previewCapture=null;resolve(canvas.toDataURL('image/jpeg',0.82));}
 }
@@ -168,7 +180,7 @@ function render(now) {
 async function init() {
   context=new runtime.ManagedWebGLRenderingContext(canvas,{alpha:false,antialias:true});
   renderer=new runtime.SceneRenderer(canvas,context,true);
-  [models,interactions,voices,scenes,dialogues]=await Promise.all([json('data/models.json'),json('data/interactions.json'),json('data/voices.json',true),json('data/scenes.json'),json('data/dialogues.json')]);
+  [models,interactions,voices,scenes,dialogues,workScenes]=await Promise.all([json('data/models.json'),json('data/interactions.json'),json('data/voices.json',true),json('data/scenes.json'),json('data/dialogues.json'),json('data/arona-scenes.json')]);
   $('total').textContent=`${models.filter(m=>m.category==='SpineLobbies').length} lobbies · ${models.length} readable models`;
   $('search').oninput=renderList;$('category').onchange=renderList;
   $('talk').onclick=talk;$('pat').onclick=togglePat;
@@ -189,7 +201,7 @@ async function init() {
         exportDownloadURL=URL.createObjectURL(result.blob);
         const download=document.createElement('a');download.href=exportDownloadURL;download.download=result.filename;download.textContent='Download ZIP';
         $('export-links').append(download);
-        $('export-message').textContent=`Ready: ${result.audioFiles} voice clips · ${(result.zipBytes/1048576).toFixed(1)} MB\nExtract the ZIP, then drag index.html into Create Wallpaper in Wallpaper Engine.\nEverything needed for the offline wallpaper is included.`;
+        $('export-message').textContent=`Ready: ${result.audioFiles} voice clips · ${(result.zipBytes/1048576).toFixed(1)} MB\nExtract the ZIP, then drag index.html into Create Wallpaper in Wallpaper Engine.\n${scene.workScene ? 'Arona work-scene dialogue, effects and Stand portrait are not included.' : 'Everything needed for the offline wallpaper is included.'}`;
         return;
       }
       const response=await fetch('/api/export',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({modelId,preview})});

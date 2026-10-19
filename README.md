@@ -48,6 +48,7 @@ The upload script creates a separate sibling checkout on the `assets` branch, va
 - Recovered UIRoot reference size 2960×1440, native camera constraints, idle gates, drag smoothing and release blocking.
 - Japanese dialogue joined from the original MemoryLobby/CharacterDialog tables; 280 model records match a prefab, with matching animations in 274 records. Unmatched records remain unfilled.
 - Original speech-bubble images and Japanese font. Original event payloads select voice clips; ambiguous voice mappings are left out.
+- Arona work scenes now keep the original background track, idle actor combinations, touch colliders and return-state gates. See [the evidence and remaining gaps](docs/arona-reconstruction.md); work-scene dialogue, effects and the separate Stand portrait remain incomplete.
 - Portable tests cover deployed paths, English controls, the complete readable catalog and browser-only ZIP contents. Full local checks cover 294 lobby skeletons, 5,504 clip configs and 576 drag controls.
 
 This is not verified as a 100% reproduction. Unity timelines, post-processing, gyro, all random-idle behavior, account/season conditions, overlapping-collider ordering and full NGUI text/tween behavior are incomplete. The exported wallpaper has been checked as a standalone browser project; Wallpaper Engine native-host verification remains pending.
