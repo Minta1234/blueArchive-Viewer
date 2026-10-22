@@ -1,5 +1,6 @@
 import {wallpaperHTML,wallpaperProject,wallpaperReadme} from './wallpaper-template.mjs';
 import {workSceneForModel} from './work-scene.mjs';
+import {voiceForEvent} from './interaction.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -36,7 +37,11 @@ export async function exportWallpaper(modelId,{preview,outputRoot=exportRoot}={}
   for(const animation of skeletonData.animations)for(const timeline of animation.timelines)for(const event of timeline.events || []) {
     for(const key of [event.stringValue,event.data.stringValue,event.data.audioPath,event.data.name])if(key)voiceKeys.add(key);
   }
-  const voices=Object.fromEntries([...voiceKeys].filter(k=>allVoices[k]).map(k=>[k,allVoices[k]]));
+  const voices={};
+  for(const key of voiceKeys){
+    const file=allVoices[key] || voiceForEvent({stringValue:key,data:{name:key}},allVoices);
+    if(file)voices[key]=file;
+  }
   const audioFiles=[...new Set(Object.values(voices))];
   await fs.mkdir(outputRoot,{recursive:true});
   const slug=model.folder.replace(/[^A-Za-z0-9_-]/g,'_').slice(0,64) || 'wallpaper';

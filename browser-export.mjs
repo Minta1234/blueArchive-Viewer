@@ -1,6 +1,7 @@
 import {zip,strToU8} from 'fflate';
 import {wallpaperHTML,wallpaperProject,wallpaperReadme} from './wallpaper-template.mjs';
 import {assetURL} from './asset-path.mjs';
+import {voiceForEvent} from './interaction.mjs';
 function base64(bytes) {
   const parts=[];
   for(let i=0;i<bytes.length;i+=32768)parts.push(String.fromCharCode(...bytes.subarray(i,i+32768)));
@@ -20,7 +21,11 @@ export async function exportInBrowser({scene,voices,dialogue,uiRoot,assetBase,au
   for(const animation of skeleton.data.animations)for(const timeline of animation.timelines)for(const event of timeline.events || []) {
     for(const key of [event.stringValue,event.data.stringValue,event.data.audioPath,event.data.name])if(key)voiceKeys.add(key);
   }
-  const selectedVoices=Object.fromEntries([...voiceKeys].filter(key=>voices[key]).map(key=>[key,voices[key]]));
+  const selectedVoices={};
+  for(const key of voiceKeys){
+    const file=voices[key] || voiceForEvent({stringValue:key,data:{name:key}},voices);
+    if(file)selectedVoices[key]=file;
+  }
   const audioFiles=[...new Set(Object.values(selectedVoices))];
   const files=[
     ...atlas.pages.map(page=>['textures/'+page.name,assetURL(model.atlas.slice(0,model.atlas.lastIndexOf('/')+1)+page.name,assetBase)]),

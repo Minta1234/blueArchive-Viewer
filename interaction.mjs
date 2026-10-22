@@ -1,7 +1,21 @@
 export const referenceKey = ref => ref ? `${ref.file}:${ref.pathId}` : null;
 export const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-export const voiceForEvent = (event,voices) => voices[event.stringValue] || voices[event.data.stringValue]
-  || voices[event.data.audioPath] || voices[event.data.name];
+export const voiceForEvent = (event,voices) => {
+  if (!event || !voices) return null;
+  const direct = voices[event.stringValue] || voices[event.data?.stringValue]
+    || voices[event.data?.audioPath] || voices[event.data?.name];
+  if (direct) return direct;
+  const candidates = [event.stringValue, event.data?.stringValue, event.data?.audioPath, event.data?.name];
+  for (const c of candidates) {
+    if (!c || typeof c !== 'string') continue;
+    const clean = c.replace(/^(?:sound|audio|images\/sound|images\/audio)\//i, '').replace(/\.(?:ogg|wav|mp3)$/i, '');
+    const found = voices[clean] || voices[clean.toLowerCase()] || voices[c.toLowerCase()]
+      || voices[`sound/${clean}`] || voices[`sound/${clean}.ogg`] || voices[`Sound/${clean}.wav`]
+      || voices[`Audio/${clean}`] || voices[`Audio/${clean}.wav`];
+    if (found) return found;
+  }
+  return null;
+};
 
 export function multiply(a, b) {
   return [a[0]*b[0]+a[2]*b[1], a[1]*b[0]+a[3]*b[1], a[0]*b[2]+a[2]*b[3],

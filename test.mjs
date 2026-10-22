@@ -85,6 +85,18 @@ test('actual Talk timeline string payload resolves the original voice file',()=>
   assert.ok(played.includes('audio/airi_memoriallobby_1_1.ogg'));
   const file=fs.readFileSync(path.join(here,played[0]));assert.equal(file.subarray(0,4).toString(),'OggS');
 });
+test('CH0200_home Talk timeline events resolve all original voice files',()=>{
+  const model=models.find(m=>m.id==='SpineLobbies/CH0200_home/CH0200_home'),scene=load(model),voices=readJSON('voices.json');
+  const played=[];scene.state.addListener({event:(_entry,event)=>{const voice=voiceForEvent(event,voices);if(voice)played.push(voice);}});
+  scene.controller.start();
+  scene.state.setAnimation(1,'Talk_01_M',false);tick(scene,4);
+  assert.ok(played.includes('audio/ch0200_memoriallobby_1_1.ogg'));
+  assert.ok(played.includes('audio/ch0200_memoriallobby_1_2.ogg'));
+  for(const p of played){
+    const f=fs.readFileSync(path.join(here,p));
+    assert.equal(f.subarray(0,4).toString(),'OggS');
+  }
+});
 test('all 294 lobby skeletons and original clip graphs can be applied',()=>{
   const lobbies=models.filter(m=>m.category==='SpineLobbies');assert.equal(lobbies.length,294);
   let animations=0,drags=0;
