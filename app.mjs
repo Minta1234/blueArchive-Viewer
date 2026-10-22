@@ -12,7 +12,7 @@ let context,renderer,models,interactions,scenes,dialogues,workScenes,voices={},a
 let paused=false,muted=false,lastTime=performance.now(),press=null,forcedPat=false;
 let previewCapture=null,exportDownloadURL=null,voiceSummary='';
 const pointVector=new runtime.Vector3();
-const voiceAudio=new SceneVoiceAudio({resolveURL:file=>file.startsWith('audio/') ? `./${file}` : joinAssetURL(file,settings.audioBase || './'),
+const voiceAudio=new SceneVoiceAudio({resolveURL:file=>joinAssetURL(file,settings.audioBase || './'),
   onState:playing=>{$('voice-status').textContent=playing ? 'Playing voice' : voiceSummary;},
   onError:error=>{if(error.name==='NotAllowedError')$('mode').textContent='Click the scene or Talk to enable audio';else console.warn('Voice preload/playback failed',error);}});
 voiceAudio.setVolume(0.85);
